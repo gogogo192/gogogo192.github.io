@@ -8,7 +8,7 @@ class Car {
 
     validateName(name) {
         if (name.length > 5) {
-            throw new Error("ÀÚµ¿Â÷ ÀÌ¸§Àº ÃÖ´ë 5±ÛÀÚ±îÁö °¡´ÉÇÕ´Ï´Ù.");
+            throw new Error("ìë™ì°¨ ì´ë¦„ì€ ìµœëŒ€ 5ê¸€ìê¹Œì§€ ê°€ëŠ¥í•©ë‹ˆë‹¤.");
         }
         return name;
     }
@@ -28,24 +28,23 @@ class Car {
     getPosition() {
         return this.position;
     }
+    
+    static async createCarsFromUserInput() {
+        let input = await Console.readLineAsync("ê²½ì£¼í•  ìë™ì°¨ ì´ë¦„ì„ ì…ë ¥í•˜ì„¸ìš”.(ì´ë¦„ì€ ì‰¼í‘œ(,) ê¸°ì¤€ìœ¼ë¡œ êµ¬ë¶„) ");
+        let carNames = input.split(",");
+        return carNames.map(carName => new Car(carName));
+    }
 }
 
 class Application {
     static MOVING_FORWARD = 4;
 
     static async main() {
-        let input = await Console.readLineAsync("°æÁÖÇÒ ÀÚµ¿Â÷ ÀÌ¸§À» ÀÔ·ÂÇÏ¼¼¿ä.(ÀÌ¸§Àº ½°Ç¥(,) ±âÁØÀ¸·Î ±¸ºĞ) ");
-        let carNames = input.split(",");
-        let cars = carNames.map(carName => new Car(carName));
+        let cars = await Car.createCarsFromUserInput();
 
-        let tryCountInput = await Console.readLineAsync("½ÃµµÇÒ È¸¼ö´Â ¸îÈ¸ÀÎ°¡¿ä? ");
-        if (isNaN(parseInt(tryCountInput))) {
-            console.log("¿Ã¹Ù¸¥ ¼ıÀÚ¸¦ ÀÔ·ÂÇÏ¼¼¿ä.");
-            return;
-        }
-        let tryCount = parseInt(tryCountInput);
+        let tryCount = parseInt(await Console.readLineAsync("ì‹œë„í•  íšŒìˆ˜ëŠ” ëª‡íšŒì¸ê°€ìš”? "));
 
-        console.log("\n½ÇÇà °á°ú\n");
+        console.log("\nì‹¤í–‰ ê²°ê³¼\n");
         for (let i = 0; i < tryCount; i++) {
             for (let car of cars) {
                 car.move();
@@ -58,9 +57,9 @@ class Application {
         let winners = cars.filter(car => car.getPosition() === maxPosition).map(car => car.getName());
 
         if (winners.length > 1) {
-            console.log("ÃÖÁ¾ ¿ì½ÂÀÚ: " + winners.join(", "));
+            console.log("ìµœì¢… ìš°ìŠ¹ì: " + winners.join(", "));
         } else {
-            console.log("ÃÖÁ¾ ¿ì½ÂÀÚ: " + winners[0]);
+            console.log("ìµœì¢… ìš°ìŠ¹ì: " + winners[0]);
         }
     }
 }
